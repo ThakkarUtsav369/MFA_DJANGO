@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  web:
+    container_name: otp_django_container_zip
+    restart: always
+    build: .
+    entrypoint: ./docker-entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    container_name: otp_db_container_zip
+    restart: always
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=otp
+      - POSTGRES_DB=otp
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
